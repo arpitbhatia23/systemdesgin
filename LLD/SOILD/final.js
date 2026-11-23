@@ -184,7 +184,7 @@ class Order {
       (items) => items.menuItem.name === menuItem.name,
     );
     if (!existingItems) {
-      this.items.push({ menuItem: menuItem, quantity: quantity });
+      this.items.push({ menuItem: { ...menuItem }, quantity: quantity });
     } else {
       console.log(existingItems.quantity);
       existingItems.quantity += quantity;
@@ -193,8 +193,12 @@ class Order {
   }
   removeItem({ itemName }) {
     const initialLength = this.items.length;
+    console.log(this.items);
 
-    this.items = this.items.filter((item) => item.name !== itemName);
+    this.items = this.items.filter((item) => {
+      return item.menuItem.name !== itemName;
+    });
+    console.log(this.items);
 
     if (this.items.length < initialLength) {
       console.log(`${itemName} removed successfully`);
@@ -276,25 +280,25 @@ class WALLET {
 }
 
 class EmailService {
-  send(id, message) {
-    console.log(`send email:${(id, message)}`);
+  send(name, message) {
+    console.log(`send email: ${name} ${message}`);
   }
 }
 class SMSService {
-  send(id, message) {
-    console.log(`send sms:${(id, message)}`);
+  send(name, message) {
+    console.log(`send sms:${name} ${message}`);
   }
 }
 class WhatsAppService {
-  send(id, message) {
-    console.log(`send whatsapp:${(id, message)}`);
+  send(name, message) {
+    console.log(`send whatsapp:${name} ${message}`);
   }
 }
 
 class Checkout {
   constructor({ Paymentmethod, Notifications }) {
     this.Paymentmethod = Paymentmethod;
-    this.Notifications = notification;
+    this.Notifications = Notifications;
   }
   checkout(order) {
     const totalamount = order.calculateTotal();
