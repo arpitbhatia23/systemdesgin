@@ -369,7 +369,6 @@ test("ORD-02", "Display order details - All four properties printed", () => {
     "paymentMethod: UPI",
     "amount: 50000",
   ].join("\n");
-
   assert.strictEqual(output, expected);
 });
 

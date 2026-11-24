@@ -266,21 +266,42 @@ class Order {
     this.paymentMethod = paymentMethod;
     this.amount = amount;
   }
-  clone() {
+  clone(orderId) {
     return new Order({
-      orderId: this.orderId,
-      product: this.product,
+      orderId: orderId || this.orderId,
+      product: structuredClone(this.product),
       paymentMethod: this.paymentMethod,
       amount: this.amount,
     });
   }
   displayOrder() {
     console.log(`orderId: ${this.orderId}`);
-    console.log(`product: ${this.product}`);
+    console.log(
+      `product: ${
+        typeof this.product === "object"
+          ? JSON.stringify(this.product, null, 2)
+          : this.product
+      }`,
+    );
     console.log(`paymentMethod: ${this.paymentMethod}`);
     console.log(`amount: ${this.amount}`);
   }
 }
+
+const order1 = new Order({
+  orderId: "ORD101",
+  product,
+  paymentMethod: "UPI",
+  amount: 50000,
+});
+
+const order2 = order1.clone("ORD102");
+
+order2.product.price = 100;
+order1.displayOrder();
+order2.displayOrder();
+console.log(order1.product.price); // Should remain 50000
+console.log(order2.product.price); // Should be 100
 export {
   CreateEmailPaymentNotifications,
   CreateEmailOrderNotifications,
